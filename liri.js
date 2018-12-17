@@ -114,6 +114,24 @@ function showConcert(band) {
 
     function showRandom() {
 
+        function showRandom(usertext) {
+            //Show random to use fs node package to take text in random.txt and use it to call oneof Liri's commands
+         
+            var fs = require("fs");
+         
+            //Read random.txt file
+            fs.readFile("./random.txt", "utf8", function (error, data) {
+                if (error) {
+                    return console.log(error)
+                }
+                //Split data into array
+                var textArr = data.split(",");
+                liriCommand = textArr[0];
+                liriSearch = textArr[1];
+                main(); //call main routine to execute one of the other 3 functions
+            });
+         }
+
     }
 }
 
