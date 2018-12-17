@@ -96,46 +96,68 @@ function showConcert(band) {
             console.log(body[set].venue.city + ", " + "at " + body[set].venue.name + ", " + "on " + date)
         }
 
-    })
+    });
+}
 
+function showMovie(movie) {
 
+    var movieName = "";
 
+    // Loop through all the words in the node argument
+    // And do a for-loop to handle the inclusion of "+"s
+    for (var i = 3; i < nodeArgs.length; i++) {
+        if (i > 3) {
+            movieName = movieName + "+" + nodeArgs[i];
+        }
 
-
-
-    function showMovie(movie) {
-
-        http://www.omdbapi.com/?i=tt3896198&apikey=ff202796
-
-        var showmovieName = "";
-
-
+        else {
+            movieName += nodeArgs[i];
+        }
     }
 
-    function showRandom() {
+    // Then run a request to the OMDB API with the movie specified
+    request("http://www.omdbapi.com/?t=" + movieName + "&y=&plot=short&apikey=trilogy", function (error, response, body) {
+        console.log(response.body)
+        var body = JSON.parse(body)
 
-        function showRandom(usertext) {
-            //Show random to use fs node package to take text in random.txt and use it to call oneof Liri's commands
-         
-            var fs = require("fs");
-         
-            //Read random.txt file
-            fs.readFile("./random.txt", "utf8", function (error, data) {
-                if (error) {
-                    return console.log(error)
-                }
-                //Split data into array
-                var textArr = data.split(",");
-                liriCommand = textArr[0];
-                liriSearch = textArr[1];
-                main(); //call main routine to execute one of the other 3 functions
-            });
-         }
+        var movieData = data.items[0]
 
+        var movie = {
+            Title: movieData.data.Title,
+            Released: movieData.data.Year,
+            Rating: movieDataa.data.imdbRating,
+            //Rotten Tomatos Rating: response.data.Rating.Value,
+            Country: movieData.data.Country,
+            Language: movieData.data.Language,
+            Plot: movieData.data.Plot,
+            Actors: movieData.data.Actors
+        }
+    });
+}
+
+function showRandom() {
+
+    function showRandom(usertext) {
+        //Show random to use fs node package to take text in random.txt and use it to call oneof Liri's commands
+
+        var fs = require("fs");
+
+        //Read random.txt file
+        fs.readFile("./random.txt", "utf8", function (error, data) {
+            if (error) {
+                return console.log(error)
+            }
+            //Split data into array
+            var textArr = data.split(",");
+            liriCommand = textArr[0];
+            liriSearch = textArr[1];
+            main(); //call main routine to execute one of the other 3 functions
+        });
     }
+
 }
 
 main();
 
 
-   
+
